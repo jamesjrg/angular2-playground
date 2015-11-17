@@ -1,7 +1,5 @@
 /// <reference path="../../typings/tsd.d.ts" />
-//how does this know to use the typescript definition in node_modules? ¯\_(ツ)_/¯
 import {bootstrap, Component, Directive, CORE_DIRECTIVES, FORM_DIRECTIVES, Inject, OnChanges, Attribute, ElementRef} from 'angular2/angular2';
-import * as d3 from 'd3';
 
 class Hero {
   id: number;
@@ -66,7 +64,7 @@ class BarGraph implements OnChanges {
 
 @Component({
   selector: 'my-app',
-  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, BarGraph ],
   styles:[`
   .heroes {list-style-type: none; margin-left: 1em; padding: 0; width: 10em;}
   .heroes li { cursor: pointer; position: relative; left: 0; transition: all 0.2s ease; }
@@ -92,7 +90,7 @@ class BarGraph implements OnChanges {
       <span class="badge">{{hero.id}}</span> {{hero.name}}
     </li>
   </ul>
-  <div id="d3test"></div>
+  
   <div *ng-if="selectedHero">
     <h2>{{selectedHero.name}} details!</h2>
     <div><label>id: </label>{{selectedHero.id}}</div>
@@ -101,15 +99,23 @@ class BarGraph implements OnChanges {
         <input [(ng-model)]="selectedHero.name" placeholder="name"></input>
     </div>
   </div>
+  
+  <bar-graph
+    bind-data="graphData"
+    width="500"
+    height="130"
+  >
+  </bar-graph>
   `
 })
 class AppComponent {
   public title = 'Tour of Heroes';
   public heroes = heroes;
   public selectedHero: Hero;
+  graphData: Array<number>;
   
   constructor() {
-    d3.select("body").append("p").text("New paragraph!");
+    this.graphData = [ 10,20,30,40,60 ];
   }
   
   getSelectedClass(hero: Hero) {
