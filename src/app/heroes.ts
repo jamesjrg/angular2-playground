@@ -1,5 +1,5 @@
 /// <reference path="../../typings/tsd.d.ts" />
-import {bootstrap, Component, Directive, CORE_DIRECTIVES, FORM_DIRECTIVES, Inject, OnChanges, Attribute, ElementRef} from 'angular2/angular2';
+import {bootstrap, Component, Directive, CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/angular2';
 
 class Hero {
   id: number;
@@ -19,52 +19,9 @@ var heroes: Hero[] = [
   { "id": 20, "name": "Tornado" }
 ];
 
-@Directive({
-  selector:   'bar-graph',
-  properties: [ 'data' ]
-})
-class BarGraph implements OnChanges {
-  data: Array<number>;
-  divs: any;
-  constructor(
-    @Inject(ElementRef) elementRef: ElementRef,
-    @Attribute('width') width: string,
-    @Attribute('height') height: string) {
-
-    var el:any = elementRef.nativeElement;
-    var graph:any = d3.select(el);
-
-    this.divs = graph.
-      append('div').
-      attr({
-        'class': 'chart'
-      }).
-      style({
-        'width':  width  + 'px',
-        'height': height + 'px',
-      }).
-      selectAll('div');
-  }
-    
-  render(newValue) {
-    if (!newValue) return;
-
-    this.divs.data(newValue).enter().append('div')
-      .transition().ease('elastic')
-      .style('width', d => d + '%')
-      .text(d => d + '%');
-
-  }
-
-  onChanges() {
-    this.render(this.data);
-  }
-}  
-
-
 @Component({
   selector: 'my-app',
-  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, BarGraph ],
+  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES ],
   styles:[`
   .heroes {list-style-type: none; margin-left: 1em; padding: 0; width: 10em;}
   .heroes li { cursor: pointer; position: relative; left: 0; transition: all 0.2s ease; }
@@ -99,24 +56,12 @@ class BarGraph implements OnChanges {
         <input [(ng-model)]="selectedHero.name" placeholder="name"></input>
     </div>
   </div>
-  
-  <bar-graph
-    bind-data="graphData"
-    width="500"
-    height="130"
-  >
-  </bar-graph>
   `
 })
 class AppComponent {
   public title = 'Tour of Heroes';
   public heroes = heroes;
   public selectedHero: Hero;
-  graphData: Array<number>;
-  
-  constructor() {
-    this.graphData = [ 10,20,30,40,60 ];
-  }
   
   getSelectedClass(hero: Hero) {
     return { 'selected': hero === this.selectedHero };
