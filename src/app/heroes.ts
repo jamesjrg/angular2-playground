@@ -1,7 +1,8 @@
-/// <reference path="../../typings/tsd.d.ts" />
-import {bootstrap, Component, Directive, CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/angular2';
+import {bootstrap} from 'angular2/platform/browser';
+import {CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
+import {Component, Directive, Inject, OnChanges, Attribute, ElementRef} from 'angular2/core';
 
-class Hero {
+interface Hero {
   id: number;
   name: string;
 }
@@ -23,51 +24,79 @@ var heroes: Hero[] = [
   selector: 'my-app',
   directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES ],
   styles:[`
-  .heroes {list-style-type: none; margin-left: 1em; padding: 0; width: 10em;}
-  .heroes li { cursor: pointer; position: relative; left: 0; transition: all 0.2s ease; }
-  .heroes li:hover {color: #369; background-color: #EEE; left: .2em;}
-  .heroes .badge {
-    font-size: small;
-    color: white;
-    padding: 0.1em 0.7em;
-    background-color: #369;
-    line-height: 1em;
-    position: relative;
-    left: -1px;
-    top: -1px;
-  }
-  .selected { background-color: #EEE; color: #369; }
+    .selected {
+      background-color: #CFD8DC !important;
+      color: white;
+    }
+    .heroes {
+      margin: 0 0 2em 0;
+      list-style-type: none;
+      padding: 0;
+      width: 10em;
+    }
+    .heroes li {
+      cursor: pointer;
+      position: relative;
+      left: 0;
+      background-color: #EEE;
+      margin: .5em;
+      padding: .3em 0em;
+      height: 1.6em;
+      border-radius: 4px;
+    }
+    .heroes li.selected:hover {
+      color: white;
+    }
+    .heroes li:hover {
+      color: #607D8B;
+      background-color: #EEE;
+      left: .1em;
+    }
+    .heroes .text {
+      position: relative;
+      top: -3px;
+    }
+    .heroes .badge {
+      display: inline-block;
+      font-size: small;
+      color: white;
+      padding: 0.8em 0.7em 0em 0.7em;
+      background-color: #607D8B;
+      line-height: 1em;
+      position: relative;
+      left: -1px;
+      top: -4px;
+      height: 1.8em;
+      margin-right: .8em;
+      border-radius: 4px 0px 0px 4px;
+    }
   `],
   template: `
   <h2>My Heroes</h2>
   <ul class="heroes">
-    <li *ng-for="#hero of heroes"
-    [ng-class]="getSelectedClass(hero)"
+    <li *ngFor="#hero of heroes"
+    [class.selected]="hero === selectedHero"
     (click)="onSelect(hero)">
       <span class="badge">{{hero.id}}</span> {{hero.name}}
     </li>
   </ul>
   
-  <div *ng-if="selectedHero">
-    <h2>{{selectedHero.name}} details!</h2>
-    <div><label>id: </label>{{selectedHero.id}}</div>
-    <div>
-        <label>name: </label>
-        <input [(ng-model)]="selectedHero.name" placeholder="name"></input>
-    </div>
+  <div *ngIf="selectedHero">
+  <h2>{{selectedHero.name}} details!</h2>
+  <div><label>id: </label>{{selectedHero.id}}</div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="selectedHero.name" placeholder="name"/>
   </div>
+</div>
   `
 })
 class AppComponent {
   public title = 'Tour of Heroes';
   public heroes = heroes;
   public selectedHero: Hero;
-  
-  getSelectedClass(hero: Hero) {
-    return { 'selected': hero === this.selectedHero };
-  }
-  
+    
   onSelect(hero: Hero) { this.selectedHero = hero; }
 }
 
-bootstrap(AppComponent);
+bootstrap(AppComponent, []);

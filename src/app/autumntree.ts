@@ -1,5 +1,6 @@
-/// <reference path="../../typings/tsd.d.ts" />
-import {bootstrap, Component, Directive, CORE_DIRECTIVES, FORM_DIRECTIVES, Inject, OnChanges, Attribute, ElementRef} from 'angular2/angular2';
+import {bootstrap} from 'angular2/platform/browser';
+import {CORE_DIRECTIVES} from 'angular2/common';
+import {Component, Directive, Inject, OnChanges, Attribute, ElementRef} from 'angular2/core';
 
 @Directive({
   selector:   'autumn-tree'
@@ -30,7 +31,7 @@ class AutumnTree {
 
 @Component({
   selector: 'my-app',
-  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, AutumnTree ],
+  directives: [ CORE_DIRECTIVES, AutumnTree ],
   template: `
   <h2>A port of someone else\'s F# fractal code to D3</h2>
   
@@ -46,4 +47,4 @@ class AppComponent {
   
 }
 
-bootstrap(AppComponent);
+bootstrap(AppComponent, []);

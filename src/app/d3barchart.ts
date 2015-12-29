@@ -1,5 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
-import {bootstrap, Component, Directive, CORE_DIRECTIVES, Inject, OnChanges, Attribute, ElementRef} from 'angular2/angular2';
+import {bootstrap} from 'angular2/platform/browser';
+import {CORE_DIRECTIVES} from 'angular2/common';
+import {Component, Directive, Inject, OnChanges, Attribute, ElementRef} from 'angular2/core';
 
 @Directive({
   selector:   'bar-graph',
@@ -38,7 +40,7 @@ class BarGraph implements OnChanges {
 
   }
 
-  onChanges() {
+  ngOnChanges() {
     this.render(this.data);
   }
 }  
@@ -67,4 +69,4 @@ class AppComponent {
   }
 }
 
-bootstrap(AppComponent);
+bootstrap(AppComponent, []);
